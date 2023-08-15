@@ -4,36 +4,64 @@
 
 import 'package:flutter/material.dart';
 
-import 'src/widgets.dart';
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class Header extends StatelessWidget {
+  const Header(this.heading, {super.key});
+  final String heading;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Firebase Meetup'),
-      ),
-      body: ListView(
-        children: <Widget>[
-          Image.asset('assets/codelab.png'),
-          const SizedBox(height: 8),
-          const IconAndDetail(Icons.calendar_today, 'October 30'),
-          const IconAndDetail(Icons.location_city, 'San Francisco'),
-          const Divider(
-            height: 8,
-            thickness: 1,
-            indent: 8,
-            endIndent: 8,
-            color: Colors.grey,
-          ),
-          const Header("What we'll be doing"),
-          const Paragraph(
-            'Join us for a day full of Firebase Workshops and Pizza!',
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          heading,
+          style: const TextStyle(fontSize: 24),
+        ),
+      );
+}
+
+class Paragraph extends StatelessWidget {
+  const Paragraph(this.content, {super.key});
+  final String content;
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Text(
+          content,
+          style: const TextStyle(fontSize: 18),
+        ),
+      );
+}
+
+class IconAndDetail extends StatelessWidget {
+  const IconAndDetail(this.icon, this.detail, {super.key});
+  final IconData icon;
+  final String detail;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Icon(icon),
+            const SizedBox(width: 8),
+            Text(
+              detail,
+              style: const TextStyle(fontSize: 18),
+            )
+          ],
+        ),
+      );
+}
+
+class StyledButton extends StatelessWidget {
+  const StyledButton({required this.child, required this.onPressed, super.key});
+  final Widget child;
+  final void Function() onPressed;
+
+  @override
+  Widget build(BuildContext context) => OutlinedButton(
+        style: OutlinedButton.styleFrom(
+            side: const BorderSide(color: Colors.deepPurple)),
+        onPressed: onPressed,
+        child: child,
+      );
 }

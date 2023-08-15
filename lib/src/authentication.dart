@@ -3,37 +3,44 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import 'src/widgets.dart';
+import 'widgets.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class AuthFunc extends StatelessWidget {
+  const AuthFunc({
+    super.key,
+    required this.loggedIn,
+    required this.signOut,
+  });
+
+  final bool loggedIn;
+  final void Function() signOut;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Firebase Meetup'),
-      ),
-      body: ListView(
-        children: <Widget>[
-          Image.asset('assets/codelab.png'),
-          const SizedBox(height: 8),
-          const IconAndDetail(Icons.calendar_today, 'October 30'),
-          const IconAndDetail(Icons.location_city, 'San Francisco'),
-          const Divider(
-            height: 8,
-            thickness: 1,
-            indent: 8,
-            endIndent: 8,
-            color: Colors.grey,
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 24, bottom: 8),
+          child: StyledButton(
+              onPressed: () {
+                !loggedIn ? context.push('/sign-in') : signOut();
+              },
+              child: !loggedIn ? const Text('RSVP') : const Text('Logout')),
+        ),
+        Visibility(
+          visible: loggedIn,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 24, bottom: 8),
+            child: StyledButton(
+                onPressed: () {
+                  context.push('/profile');
+                },
+                child: const Text('Profile')),
           ),
-          const Header("What we'll be doing"),
-          const Paragraph(
-            'Join us for a day full of Firebase Workshops and Pizza!',
-          ),
-        ],
-      ),
+        )
+      ],
     );
   }
 }
